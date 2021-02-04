@@ -17,9 +17,9 @@ A slimmed down version of similar capabilities found in CircleCI's own [orb-tool
 
 See [orb registry](https://circleci.com/orbs/registry/orb/twdps/orb-tools) help and examples pages for use descriptions.
 
-Provides orb development support for:
+Provides orb development support for  
 
 * Teams engaged in trunk based development (or TBD)
-* Modifications to logic in iynere/compare-url for TBD
-* Support for alpine-based executor
-* Open testing model. __Rather then assuming any particular testing model, command parameters support any customized approach.__
+* Modifications to logic in iynere/compare-url to support TBD
+* Alpine-based executor
+* Open testing model. _Rather then assuming any particular testing model, command parameters support any customized approach._
