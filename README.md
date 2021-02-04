@@ -1,8 +1,8 @@
 <div align="center">
 	<p>
-		<img alt="CircleCI Logo" src="https://raw.githubusercontent.com/ThoughtWorks-DPS/orb-tools/master/dps.png?sanitize=true" width="75" />
+		<img alt="CircleCI Logo" src="https://raw.githubusercontent.com/ThoughtWorks-DPS/orb-tools/master/dps.png?sanitize=true" width="75" /><h3>ThoughtWorks-DPS orbs</h3>
 	</p>
-  <h3>ThoughtWorks-DPS orbs</h3>
+  
   <p>
 		<img alt="CircleCI Logo" src="https://raw.githubusercontent.com/ThoughtWorks-DPS/orb-tools/master/circle-circleci.svg?sanitize=true" width="75" />
 	</p>
