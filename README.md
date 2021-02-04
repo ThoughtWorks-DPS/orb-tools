@@ -13,15 +13,13 @@
 </div>
 <br />
 
-Basically a slimmed down version of the capabilities found in CircleCI's own [orb-tools-orb](https://github.com/CircleCI-Public/orb-tools-orb).  
+A slimmed down version of similar capabilities found in CircleCI's own [orb-tools-orb](https://github.com/CircleCI-Public/orb-tools-orb).  
 
-The differences (and motivation to take the time to create) are:
+See [orb registry](https://circleci.com/orbs/registry/orb/twdps/orb-tools) help and examples pages for use descriptions.
 
-* Branch merges are not expected for team engaged in trunk based development (or TBD)
+Provides orb development support for:
+
+* Teams engaged in trunk based development (or TBD)
 * Modifications to logic in iynere/compare-url for TBD
-* Support for alpine-based docker image as the executor
-* Open testing model. Rather then assuming any particular testing model, command parameters support any customized approach. CI testing during orb development certainly has it's own idiosyncrasies :grin:
-
-Example private registry workflow: (see [orb registry](https://circleci.com/orbs/registry/orb/twdps/orb-tools) for detailed examples)
-
-See orb registry help and examples pages for use descriptions.
+* Support for alpine-based executor
+* Open testing model. __Rather then assuming any particular testing model, command parameters support any customized approach.__
