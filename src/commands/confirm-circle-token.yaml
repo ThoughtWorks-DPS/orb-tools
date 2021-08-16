@@ -1,0 +1,18 @@
+# src/commands/confirm-circle-token.yaml
+
+description: Confirm the circleci api-token is available in the Environment
+
+parameters:
+  circle-token:
+    description: Name of environment variable storing your CircleCI API token
+    type: env_var_name
+    default: CIRCLE_TOKEN
+
+steps:
+  - run:
+      name: Confirm the circle-token parameter is for an environment variable that is set
+      command: |
+        if [ ! ${<< parameters.circle-token >>-} ]; then
+          echo "circle-token environment variable is not set, will not be able to access circleci api."
+          exit 1
+        fi

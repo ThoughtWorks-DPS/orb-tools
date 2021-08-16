@@ -1,0 +1,43 @@
+# src/commands/clean-up-tags.yaml
+
+description: >
+  Remove any publish tags (edit, patch, minor, major). These tags are used in an orb repo to identify the
+  kind of release to use with circleci orb publish promote. It would be nice to be able to call the circleci
+  api and get the resulting semantic version and then tag the repo accordingly, but until then these SHA
+  identified tags don't really help much.
+
+parameters:
+
+  release:
+    description: What type of release to publish (patch, minor, major)?
+    type: enum
+    enum: [patch, minor, major]
+
+  ssh-fingerprints:
+    description: >
+      Fingerprints for SSH deploy key (add the public key as a read/write
+      key on GitHub; add the private key in CircleCI via SSH Permissions,
+      with github.com as Hostname). Used to push a git tag back to the
+      project's repository.
+    type: string
+    default: ""
+
+steps:
+  - add_ssh_keys:
+      fingerprints: <<parameters.ssh-fingerprints>>
+  - run:
+      name: git config
+      command: |
+        git config --global user.email "$CIRCLE_USERNAME@users.noreply.github.com"
+        git config --global user.name "$CIRCLE_USERNAME"
+  - run:
+      name: cleanup release tags
+      command: |
+        # delete local tags
+        git tag -d $(git tag -l "<< parameters.release >>.*" && git tag -l "edit.*")
+
+        # fetch remote tags
+        git fetch
+
+        # delete remote tags
+        git push origin --delete $(git tag -l "<< parameters.release >>.*" && git tag -l "edit.*") || true

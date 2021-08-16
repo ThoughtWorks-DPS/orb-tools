@@ -1,0 +1,46 @@
+# src/executors/circleci-cli.yaml
+
+description: >
+  Pull supporting circleci-cli remote-docker executor using DTR 2.0 compatible registry authentication.
+
+  Can specify the registry, image, and version tag, and provide registry authentication. Default is
+  official, Alpine based circleci-cli executor.
+
+parameters:
+  registry:
+    description: Support for alternative registry
+    type: string
+    default: docker.io
+
+  image:
+    description: Support for alternative image
+    type: string
+    default: circleci/circleci-cli
+
+  tag:
+    description: Support for alternative image version
+    type: string
+    default: alpine
+
+  docker-username:
+    description: Registry authentication
+    type: string
+    default: ""
+
+  docker-password:
+    description: Registry authentication
+    type: string
+    default: ""
+
+  resource-class:
+    type: enum
+    default: medium
+    enum: [small, medium, medium+, large, xlarge]
+
+resource_class: <<parameters.resource-class>>
+
+docker:
+  - image: << parameters.registry >>/<< parameters.image >>:<< parameters.tag >>
+    auth:
+      username: << parameters.docker-username >>
+      password: << parameters.docker-password >>

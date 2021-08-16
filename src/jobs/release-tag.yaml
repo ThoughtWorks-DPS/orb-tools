@@ -1,0 +1,127 @@
+# src/jobs/release-tag.yaml
+
+description: >
+  For an orb that has been approved for a versioned release, tag the current job SHA
+  with the semantic version change type. See the description under the use-git-diff
+  parameter for how the type is determined.
+
+executor: 
+  image: << parameters:executor-image >>
+  docker-username: << parameters.executor-docker-username >>
+  docker-password: << parameters.executor-docker-password >>
+  resource-class: << parameters.executor-resource-class >>
+
+parameters:
+
+  circle-token:
+    description: Name of environment variable storing your CircleCI API token
+    type: env_var_name
+    default: CIRCLE_TOKEN
+
+  ssh-fingerprints:
+    description: >
+      Fingerprints for SSH deploy key (add the public key as a read/write
+      key on GitHub; add the private key in CircleCI via SSH Permissions,
+      with github.com as Hostname). Used to push a git tag back to the
+      project's repository.
+    type: string
+    default: ""
+
+  use-git-diff:
+    description: >
+      Calculate the git diff between this commit and the previous commit.
+      Useful for dynamically interpolating patch, minor, or major orb
+      publishing based on what parts of a destructured orb were modified.
+      Modifications to jobs or commands trigger a potential major release;
+      modifications to executors, examples, or @orb.yml trigger a minor release;
+      modifications to the orb's config.yml file trigger a patch release;
+      if none of the above are modified, and edit tag will be added but
+      publishing will be skipped. If this parameter is set to false,
+      you are able to statically pick patch, minor, or major
+      as a potential release type, by using the subsequent parameter.
+    type: boolean
+    default: true
+
+  static-release-type:
+    description: >
+      If not dynamically interpolating potential orb release type (see
+      previous parameter), select a release type using this parameter.
+    type: enum
+    enum: [patch, minor, major]
+    default: patch
+
+  executor-image:
+    description: Support for alternative image
+    type: string
+    default: docker.io/circleci/circleci-cli:alpine
+
+  executor-docker-username:
+    description: Support for alternative Registry authentication
+    type: string
+    default: ""
+
+  executor-docker-password:
+    description: Support for alternative Registry authentication
+    type: string
+    default: ""
+
+  executor-resource-class:
+    type: enum
+    default: medium
+    enum: [small, medium, medium+, large, xlarge]
+
+steps:
+  - checkout
+  - confirm-circle-token:
+      circle-token: << parameters.circle-token >>
+  - when:
+      condition: << parameters.ssh-fingerprints >>
+      steps:
+        - add_ssh_keys:
+            fingerprints: << parameters.ssh-fingerprints >>
+  - run:
+      name: git config
+      command: |
+        git config --global user.email "$CIRCLE_USERNAME@users.noreply.github.com"
+        git config --global user.name "$CIRCLE_USERNAME"
+  - when:
+      condition: << parameters.use-git-diff >>
+      steps:
+        - reconstruct:
+            circle-token: << parameters.circle-token >>
+        - attach_workspace:
+            at: workspace
+        - run:
+            name: construct/push git integration tag
+            command: |
+              CIRCLE_COMPARE_URL=$(cat CIRCLE_COMPARE_URL.txt)
+              COMMIT_RANGE=$(echo $CIRCLE_COMPARE_URL | sed 's:^.*/compare/::g')
+              echo "Commit range: $COMMIT_RANGE"
+
+              # only publish a major release if there are new jobs or commands
+              if ( git diff $COMMIT_RANGE --name-status | grep -e "A\tsrc/commands" -e "A\tsrc/commands" -e "D\tsrc/commands" -e "D\tsrc/commands" ); then
+                INTEGRATION_TAG=major.${CIRCLE_SHA1:0:7}
+
+              # publish a minor release if there are other changes to jobs or commands
+              elif ( git diff $COMMIT_RANGE --name-status | grep -e "src/commands" -e "src/jobs" ); then
+                INTEGRATION_TAG=minor.${CIRCLE_SHA1:0:7}
+
+              # patch release if any changers to examples, executors, @orb.yml
+              elif ( git diff $COMMIT_RANGE --name-status | grep -e "src/examples" -e "src/executors" -e "src/@orb.yml" ); then
+                INTEGRATION_TAG=patch.${CIRCLE_SHA1:0:7}
+
+              # otherwise, don't publish a release
+              else
+                INTEGRATION_TAG=edit.${CIRCLE_SHA1:0:7}
+              fi
+              git tag $INTEGRATION_TAG
+              git push origin $INTEGRATION_TAG
+  - unless:
+      condition: << parameters.use-git-diff >>
+      steps:
+        - run:
+            name: construct/push git integration tag
+            command: |
+              INTEGRATION_TAG=<< parameters.static-release-type >>.$CIRCLE_BRANCH-${CIRCLE_SHA1:0:7}
+              git tag $INTEGRATION_TAG
+              git push origin $INTEGRATION_TAG

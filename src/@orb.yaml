@@ -1,0 +1,15 @@
+---
+version: 2.1
+
+description: |
+  Orb jobs and commands for creating, testing, and publishing Orbs. Similar to the CircleCI/orb-tols-orb,
+  yet optimized for trunk based development workflows.
+
+  Provides orb development support for 
+
+  * Teams engaged in trunk based development (or TBD)
+  * Modifications to logic in iynere/compare-url to support TBD
+  * Alpine-based executor
+  * "Insert-Here" testing model.
+
+  Note: Does not require a specific testing model. The typical workflow allows for test steps wherever desired.

@@ -1,0 +1,100 @@
+# src/jobs/publish-dev.yaml
+
+description: >
+  Publish dev:SHA and/or dev:latest versions of an orb. You can customize
+
+  Examples: orb-name@dev:498bc49, orb-name@dev:latest
+
+executor: 
+  image: << parameters:executor-image >>
+  docker-username: << parameters.executor-docker-username >>
+  docker-password: << parameters.executor-docker-password >>
+  resource-class: << parameters.executor-resource-class >>
+
+parameters:
+
+  source-dir:
+    description: Path to the root of the orb source directory to be packed
+    type: string
+    default: src
+
+  orb-path:
+    description: Path of the orb file to publish
+    type: string
+    default: orb.yml
+
+  orb-name:
+    description: Semver-less name of an orb, e.g. circleci/orb-tools
+    type: string
+
+  publish-latest-version:
+    description: Publish a named dev:latest version for ease of testing
+    type: boolean
+    default: true
+
+  latest-version-ref:
+    description: Dev:tag to use for orb latest version
+    type: string
+    default: dev:latest
+
+  publish-sha-version:
+    description: >
+      Publish a dev version of the orb, with a job's $CIRCLE_SHA, to avoid overwriting at next publish,
+      available to be used for forensic comparison, at least for the life of @dev versions
+    type: boolean
+    default: true
+
+  sha-version-ref:
+    description: >
+      Dev:reference to use for semi-persistent dev version of the orb,
+      defaults to 'dev:${CIRCLE_SHA1:0:7}' (evaluates to the first 7
+      characters of the job's commit hash)
+    type: string
+    default: dev:${CIRCLE_SHA1:0:7}
+
+  circle-token:
+    description: Name of environment variable containing your CircleCI API token
+    type: env_var_name
+    default: CIRCLE_TOKEN
+
+  executor-image:
+    description: Support for alternative image
+    type: string
+    default: docker.io/circleci/circleci-cli:alpine
+
+  executor-docker-username:
+    description: Support for alternative Registry authentication
+    type: string
+    default: ""
+
+  executor-docker-password:
+    description: Support for alternative Registry authentication
+    type: string
+    default: ""
+
+  executor-resource-class:
+    type: enum
+    default: medium
+    enum: [small, medium, medium+, large, xlarge]
+
+steps:
+  - checkout
+  - confirm-circle-token:
+      circle-token: << parameters.circle-token >>
+  - pack:
+      source: << parameters.source-dir >>
+      destination: << parameters.orb-path >>
+  - when:
+      condition: << parameters.publish-latest-version >>
+      steps:
+        - publish:
+            orb-path: << parameters.orb-path >>
+            orb-ref: << parameters.orb-name >>@<< parameters.latest-version-ref >>
+            circle-token: << parameters.circle-token >>
+  - when:
+      condition: << parameters.publish-sha-version >>
+      steps:
+        - publish:
+            orb-path: << parameters.orb-path >>
+            orb-ref: << parameters.orb-name >>@<< parameters.sha-version-ref >>
+            circle-token: << parameters.circle-token >>

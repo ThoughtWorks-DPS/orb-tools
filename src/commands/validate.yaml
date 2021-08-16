@@ -1,0 +1,15 @@
+# src/commands/validate.yaml
+
+description: Uses the circleci-cli to validate the orb
+
+parameters:
+
+  orb-path:
+    description: Path to the orb file to be validated
+    type: string
+    default: orb.yml
+
+steps:
+  - run:
+      name: Validate whether this is a well-formed orb
+      command: circleci orb validate << parameters.orb-path >>

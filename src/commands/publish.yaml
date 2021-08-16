@@ -1,0 +1,25 @@
+# src/commands/publish.yaml
+
+description: Use the circleci-cli to publish the orb to the registry
+
+parameters:
+  orb-path:
+    description: Path to an orb file
+    type: string
+    default: orb.yml
+
+  orb-ref:
+    description: A fully-qualified reference to an orb. This takes the form <namespace>/<orb-name>@<version>
+    type: string
+
+  circle-token:
+    description: Name of environment variable storing your CircleCI API token
+    type: env_var_name
+    default: CIRCLE_TOKEN
+
+steps:
+  - run:
+      name: Publish orb at << parameters.orb-path >> to << parameters.orb-ref >>
+      command: |
+        circleci orb publish << parameters.orb-path >> << parameters.orb-ref >> \
+        <<# parameters.circle-token >>--token $<< parameters.circle-token >> <</ parameters.circle-token >>
