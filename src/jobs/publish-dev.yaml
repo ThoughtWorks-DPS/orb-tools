@@ -6,7 +6,8 @@ description: >
   Examples: orb-name@dev:498bc49, orb-name@dev:latest
 
 executor: 
-  image: << parameters:executor-image >>
+  name: circleci-cli
+  image: << parameters.executor-image >>
   docker-username: << parameters.executor-docker-username >>
   docker-password: << parameters.executor-docker-password >>
   resource-class: << parameters.executor-resource-class >>
@@ -75,7 +76,7 @@ parameters:
   executor-resource-class:
     type: enum
     default: medium
-    enum: [small, medium, medium+, large, xlarge]
+    enum: [small, medium, medium+, large, xlarge, 2xlarge, 2xlarge+]
 
 steps:
   - checkout

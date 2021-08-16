@@ -7,40 +7,31 @@ description: >
   official, Alpine based circleci-cli executor.
 
 parameters:
-  registry:
-    description: Support for alternative registry
-    type: string
-    default: docker.io
 
   image:
     description: Support for alternative image
     type: string
-    default: circleci/circleci-cli
-
-  tag:
-    description: Support for alternative image version
-    type: string
-    default: alpine
+    default: docker.io/circleci/circleci-cli:alpine
 
   docker-username:
-    description: Registry authentication
+    description: Support for alternative Registry authentication
     type: string
     default: ""
 
   docker-password:
-    description: Registry authentication
+    description: Support for alternative Registry authentication
     type: string
     default: ""
 
   resource-class:
     type: enum
     default: medium
-    enum: [small, medium, medium+, large, xlarge]
+    enum: [small, medium, medium+, large, xlarge, 2xlarge, 2xlarge+]
 
-resource_class: <<parameters.resource-class>>
+resource_class: << parameters.resource-class >>
 
 docker:
-  - image: << parameters.registry >>/<< parameters.image >>:<< parameters.tag >>
+  - image: << parameters.image >>
     auth:
       username: << parameters.docker-username >>
       password: << parameters.docker-password >>

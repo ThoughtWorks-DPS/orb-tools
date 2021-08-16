@@ -3,7 +3,8 @@
 description: pack and validate the orb source
 
 executor: 
-  image: << parameters:executor-image >>
+  name: circleci-cli
+  image: << parameters.executor-image >>
   docker-username: << parameters.executor-docker-username >>
   docker-password: << parameters.executor-docker-password >>
   resource-class: << parameters.executor-resource-class >>
@@ -19,7 +20,7 @@ parameters:
     description: Path including filename of where the packed orb will be written
     type: string
     default: orb.yml
-    
+
   executor-image:
     description: Support for alternative image
     type: string
@@ -38,7 +39,7 @@ parameters:
   executor-resource-class:
     type: enum
     default: medium
-    enum: [small, medium, medium+, large, xlarge]
+    enum: [small, medium, medium+, large, xlarge, 2xlarge, 2xlarge+]
 
 steps:
   - checkout
