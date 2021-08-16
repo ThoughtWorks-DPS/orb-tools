@@ -40,7 +40,7 @@ workflows:
 
       - orb-tools/publish-dev:
           context: orb-publishing
-          orb-name: feedyard/orb-tools
+          orb-name: twdps/orb-tools
           filters: *dev-release-filter
           requires:
             - orb-tools/validate
@@ -67,7 +67,7 @@ workflows:
           name: patch-release
           context: orb-publishing
           release: patch
-          orb-name: feedyard/orb-tools
+          orb-name: twdps/orb-tools
           ssh-fingerprints: $SVC_FINGERPRINT
           filters: *patch-tag-publish-filter
 
@@ -75,7 +75,7 @@ workflows:
           name: minor-release
           context: orb-publishing
           release: minor
-          orb-name: feedyard/orb-tools
+          orb-name: twdps/orb-tools
           ssh-fingerprints: $SVC_FINGERPRINT
           filters: *minor-tag-publish-filter
 
@@ -83,6 +83,6 @@ workflows:
           name: major-release
           context: orb-publishing
           release: major
-          orb-name: feedyard/orb-tools
+          orb-name: twdps/orb-tools
           ssh-fingerprints: $SVC_FINGERPRINT
           filters: *major-tag-publish-filter
