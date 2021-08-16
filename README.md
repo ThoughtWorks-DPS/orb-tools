@@ -17,7 +17,7 @@ Provides orb development support for
 
 * Teams engaged in trunk-based development
 * Modifications to logic in iynere/compare-url to support TBD
-* Alpine-based circleci cli exexecutor
+* Alpine-based circleci cli executor
 * "Insert-Here" testing model.
 
 _Does not require a specific testing model. The typical workflow allows for test steps wherever desired._
