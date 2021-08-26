@@ -35,4 +35,4 @@ parameters:
 steps:
   - run:
       name: See orb-registry documentation for changes
-      command: echo 'Success'
+      command: echo 'Success!'
