@@ -37,7 +37,7 @@ workflows:
           filters: *dev-release-filter
 
       - orb-tools/publish-dev:
-          context: orb-publishing
+          context: twdps-orb-authors
           orb-name: twdps/orb-tools
           filters: *dev-release-filter
           requires:
@@ -50,7 +50,7 @@ workflows:
           filters: *dev-release-filter
 
       - orb-tools/release-tag:
-          context: orb-publishing
+          context: twdps-orb-authors
           ssh-fingerprints: $SVC_FINGERPRINT
           filters: *dev-release-filter
           requires:
@@ -62,7 +62,7 @@ workflows:
       # files have been modified 
       - orb-tools/promote-dev-to-prod:
           name: patch-release
-          context: orb-publishing
+          context: twdps-orb-authors
           release: patch
           orb-name: twdps/orb-tools
           ssh-fingerprints: $SVC_FINGERPRINT
@@ -70,7 +70,7 @@ workflows:
 
       - orb-tools/promote-dev-to-prod:
           name: minor-release
-          context: orb-publishing
+          context: twdps-orb-authors
           release: minor
           orb-name: twdps/orb-tools
           ssh-fingerprints: $SVC_FINGERPRINT
@@ -78,7 +78,7 @@ workflows:
 
       - orb-tools/promote-dev-to-prod:
           name: major-release
-          context: orb-publishing
+          context: twdps-orb-authors
           release: major
           orb-name: twdps/orb-tools
           ssh-fingerprints: $SVC_FINGERPRINT
