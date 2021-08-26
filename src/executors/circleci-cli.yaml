@@ -4,7 +4,7 @@ description: >
   Pull supporting circleci-cli remote-docker executor using DTR 2.0 compatible registry authentication.
 
   Can specify the registry, image, and version tag, and provide registry authentication. Default is
-  the official, Alpine based circleci-cli executor.
+  the official, Alpine based circleci-cli executor.  
 
 parameters:
 
