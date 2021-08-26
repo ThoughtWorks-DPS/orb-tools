@@ -4,7 +4,6 @@ version: 2.1
 orbs:
   orb-tools: twdps/orb-tools@dev:latest
 
-# yaml anchor filters
 dev-release-filter: &dev-release-filter
   branches:
     only: /main/
@@ -29,7 +28,6 @@ major-tag-publish-filter: &major-tag-publish-filter
   tags:
     only: /^major.*/
 
-
 workflows:
   version: 2
 
@@ -41,7 +39,7 @@ workflows:
       - orb-tools/publish-dev:
           context: orb-publishing
           orb-name: twdps/orb-tools
-          #filters: *dev-release-filter
+          filters: *dev-release-filter
           requires:
             - orb-tools/validate
 
@@ -61,8 +59,7 @@ workflows:
   promote-orb-tools:
     jobs:
       # patch, minor, or major publishing, depending on which orb source
-      # files have been modified (that logic lives in the
-      # release-tag job's source)
+      # files have been modified 
       - orb-tools/promote-dev-to-prod:
           name: patch-release
           context: orb-publishing
