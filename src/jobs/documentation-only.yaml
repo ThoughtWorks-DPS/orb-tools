@@ -1,0 +1,38 @@
+# src/jobs/documentation-only.yaml
+
+description: >
+  Only documentation or README changes. Nothing to publish.
+
+executor: 
+  name: circleci-cli
+  image: << parameters.executor-image >>
+  docker-username: << parameters.executor-docker-username >>
+  docker-password: << parameters.executor-docker-password >>
+  resource-class: << parameters.executor-resource-class >>
+
+parameters:
+
+  executor-image:
+    description: Support for alternative image
+    type: string
+    default: docker.io/circleci/circleci-cli:alpine
+
+  executor-docker-username:
+    description: Support for alternative Registry authentication
+    type: string
+    default: ""
+
+  executor-docker-password:
+    description: Support for alternative Registry authentication
+    type: string
+    default: ""
+
+  executor-resource-class:
+    type: enum
+    default: medium
+    enum: [small, medium, medium+, large, xlarge, 2xlarge, 2xlarge+]
+
+steps:
+  - run:
+      name: See orb-registry documentation for changes
+      command: echo 'Success'

@@ -10,6 +10,12 @@ dev-release-filter: &dev-release-filter
   tags:
     ignore: /.*/
 
+edit-tag-publish-filter: &edit-tag-publish-filter
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^edit.*/
+
 patch-tag-publish-filter: &patch-tag-publish-filter
   branches:
     ignore: /.*/
@@ -83,3 +89,7 @@ workflows:
           orb-name: twdps/orb-tools
           ssh-fingerprints: $SVC_FINGERPRINT
           filters: *major-tag-publish-filter
+
+      - orb-tools/documentation-only:
+          name: documentation-updates
+          filters: *edit-tag-publish-filter
