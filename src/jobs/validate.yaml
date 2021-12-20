@@ -43,6 +43,7 @@ parameters:
 
 steps:
   - checkout
+  - setup_remote_docker
   - pack:
       source: << parameters.source-dir >>
       destination: << parameters.destination-orb-path >>
