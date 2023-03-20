@@ -9,7 +9,6 @@ description: |
 
   * Teams engaged in trunk based development (or TBD)
   * Modifications to logic in iynere/compare-url to support TBD
-  * Alpine-based executor
   * "Insert-Here" testing model.
 
   Note: Does not require a specific testing model. The typical workflow allows for test steps wherever desired.
