@@ -54,7 +54,7 @@ parameters:
   executor-image:
     description: Support for alternative image
     type: string
-    default: docker.io/circleci/circleci-cli
+    default: docker.io/circleci/circleci-cli:alpine
 
   executor-docker-username:
     description: Support for alternative Registry authentication
