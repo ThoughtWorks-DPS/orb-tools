@@ -19,4 +19,4 @@ steps:
       command: mkdir -pv $(dirname << parameters.destination >>)
   - run:
       name: Pack << parameters.source>> to << parameters.destination >>
-      command: circleci orb pack << parameters.source >> > << parameters.destination >>
+      command: circleci config pack << parameters.source >> > << parameters.destination >>
