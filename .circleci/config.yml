@@ -43,7 +43,7 @@ workflows:
           filters: *dev-release-filter
 
       - orb-tools/publish-dev:
-          context: twdps-orb-authors
+          context: twdps-core-labs-team
           orb-name: twdps/orb-tools
           filters: *dev-release-filter
           requires:
