@@ -1,4 +1,3 @@
----
 version: 2.1
 
 description: |
@@ -11,4 +10,6 @@ description: |
   * Modifications to logic in iynere/compare-url to support TBD
   * "Insert-Here" testing model.
 
-  Note: Does not require a specific testing model. The typical workflow allows for test steps wherever desired.
+  Note: Does not require a specific testing model. The typical workflow allows for test steps wherever desired.\
+display:
+  source_url: "https://github.com/ThoughtWorks-DPS/orb-tools"
