@@ -13,6 +13,8 @@
 
 A slimmed down version of similar capabilities found in CircleCI's own [orb-tools-orb](https://github.com/CircleCI-Public/orb-tools-orb).  
 
+DEPRECATED. Note this orb is no longer supported. Recommend using circleci/orb-tools.  
+
 Provides orb development support for  
 
 * Teams engaged in trunk-based development
